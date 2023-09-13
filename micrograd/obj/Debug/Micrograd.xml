@@ -1,0 +1,125 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Micrograd
+</name>
+</assembly>
+<members>
+<member name="T:Micrograd.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:Micrograd.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:Micrograd.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.NN.iModule.ZeroGrad">
+ <summary>
+ Zeroes out the gradients of all parameters in the module.
+ </summary>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.NN.iModule.Parameters">
+ <summary>
+ Returns a list of parameters in the module.
+ </summary>
+ <returns>A list of parameters.</returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.CharDataset.Main">
+ <summary>
+ This example demonstrates 
+ how to use the CharDataset class to create datasets from an input text file,
+ access dataset information, 
+ retrieve individual words and their encoded representations, 
+ and check if a word exists in the dataset. 
+ It also prints out the first few words in the dataset.
+ </summary>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.#ctor(System.Double,System.Collections.Generic.IEnumerable{Micrograd.MicroAutoGrad.Value},System.String)">
+ <summary>
+ Stores a single scalar value and its gradient.
+ </summary>
+ <param name="data">The initial value of the scalar.</param>
+ <param name="_children">Optional. A collection of child nodes in the computation graph.</param>
+ <param name="_op">Optional. The operation that produced this node.</param>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.#ctor(System.Collections.Generic.List{System.Double},System.Collections.Generic.IEnumerable{Micrograd.MicroAutoGrad.Value},System.String)">
+ <summary>
+ Stores a vector of Values
+ </summary>
+ <param name="data">The initial value of the scalar.</param>
+ <param name="_children">Optional. A collection of child nodes in the computation graph.</param>
+ <param name="_op">Optional. The operation that produced this node.</param>
+</member>
+<member name="P:Micrograd.MicroAutoGrad.Value.WeightedParameters">
+ <summary>
+ Results of Weights and Biases from (SumWeightedInputs) Which Performs a Forward Pass 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.op_Multiply(Micrograd.MicroAutoGrad.Value,Micrograd.MicroAutoGrad.Value)">
+ <summary>
+ Multiplication operator overload.
+ </summary>
+ <param name="left">The first Value object to be multiplied.</param>
+ <param name="right">The second Value object to be multiplied.</param>
+ <returns>A new Value object representing the result of the multiplication.</returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.op_Addition(Micrograd.MicroAutoGrad.Value,Micrograd.MicroAutoGrad.Value)">
+ <summary>
+ Addition operator overload.
+ </summary>
+ <param name="left">The first Value object to be added.</param>
+ <param name="right">The second Value object to be added.</param>
+ <returns>A new Value object representing the result of the addition.</returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.backward">
+ <summary>
+ Implements backpropagation (reverse-mode autodiff) over a dynamically built DAG
+ Computes the gradients using the backward pass.
+ </summary>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.LogSoftmax">
+ <summary>
+ Normalization and Numerical Stability: 
+ When computing the softmax, it's essential to ensure numerical stability, 
+ especially when dealing with large or small values in the input logits. 
+ You can use a common technique called log-softmax to address this issue. 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.Softmax">
+ <summary>
+ Normalization of Softmax Values: If you want to compute the softmax values (not log-softmax), 
+ you should normalize the exponential values to ensure that they sum to 1. 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.SumWeightedInputs(Micrograd.MicroAutoGrad.Value,System.Collections.Generic.List{Micrograd.MicroAutoGrad.Value},Micrograd.MicroAutoGrad.Value)">
+ <summary>
+ Single Linear Pass using internal vector
+ </summary>
+ <param name="x">Inputs</param>
+ <param name="w">Weights</param>
+ <param name="b">Bias</param>
+ <returns></returns>
+</member>
+<member name="M:Micrograd.MicroAutoGrad.Value.SumWeightedInputsList(System.Collections.Generic.List{Micrograd.MicroAutoGrad.Value},System.Collections.Generic.List{Micrograd.MicroAutoGrad.Value},Micrograd.MicroAutoGrad.Value)">
+ <summary>
+ Single Linear Pass 
+ </summary>
+ <param name="x">Inputs</param>
+ <param name="w">Weights</param>
+ <param name="b">Bias</param>
+ <returns></returns>
+</member>
+</members>
+</doc>
