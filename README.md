@@ -1,157 +1,157 @@
 
-# micrograd
 
-A tiny Autograd engine (with a bite! :)). Implements backpropagation (reverse-mode autodiff) over a dynamically built DAG and a small neural networks library on top of it with a PyTorch-like API. Both are tiny, with about 100 and 50 lines of code respectively. The DAG only operates over scalar values, so e.g. we chop up each neuron into all of its individual tiny adds and multiplies. However, this is enough to build up entire deep neural nets doing binary classification, as the demo notebook shows. Potentially useful for educational purposes.
+ VB.NET:
+
+markdown
+
+# MicroGrad - An Autograd Library for VB.NET
+
+MicroGrad is a powerful autograd library for VB.NET, specifically designed for machine learning and deep learning tasks. Whether you are a seasoned machine learning engineer or a beginner taking your first steps into the world of neural networks, MicroGrad simplifies the process of building and training models.
+
+## Key Features
+
+- **Automatic Differentiation:** MicroGrad's core feature is automatic differentiation, which allows you to compute gradients of mathematical expressions. This is crucial for training machine learning models, as it enables gradient-based optimization techniques like stochastic gradient descent.
+
+- **Neural Network Building Blocks:** MicroGrad provides a collection of neural network building blocks, including layers, activation functions, and attention mechanisms. These components can be easily combined to create complex neural architectures.
+
+- **Flexibility:** With MicroGrad, you have the flexibility to define custom neural network layers and loss functions. This means you can experiment with novel architectures and loss functions tailored to your specific use case.
+
+- **Ease of Use:** MicroGrad is designed to be user-friendly. You can define and train models using familiar VB.NET syntax, making it accessible to both newcomers and experienced developers.
+
+## Installation
+
+You can add MicroGrad to your VB.NET project by cloning this repository or downloading the source code. You may also compile it as a standalone assembly and reference it in your project.
+
+## Usage
 
 
-﻿### Creating a Vector of Values:
+Here are some examples of how to use MicroGrad's core components:
 
+### Scalars and Vectors
 
-You can create a vector of Value objects representing a list of scalars as follows:
+MicroGrad provides `Scaler` and `Vector` classes for numerical computations. You can create and manipulate scalars and vectors with ease:
 
 ```vbnet
+Dim a As New Scaler(2.0)
+Dim b As New Scaler(3.0)
+Dim c As Scaler = a + b
+Dim d As Scaler = a * b
 
-Dim vectorData As New List(Of Double) From {1.0, 2.0, 3.0}
-Dim vectorValue As New Value(vectorData)
+Dim v1 As New Vector(New List(Of Double)() From {1.0, 2.0, 3.0})
+Dim v2 As New Vector(New List(Of Double)() From {4.0, 5.0, 6.0})
+Dim v3 As Vector = v1 + v2
+
+
+Neural Networks
+
+You can build neural networks using MicroGrad's neural network components. Here's an example of creating a simple feedforward neural network:
+
+``` vbnet
+
+Dim model As New LayerBlock()
+model.AddLayer(New LinearLayer(inputSize:=64, outputSize:=128, applyNonLinearActivation:=True))
+model.AddLayer(New LinearLayer(inputSize:=128, outputSize:=10))
+
+' Forward pass
+Dim input As New Vector(...) ' Your input data
+Dim output As Vector = model.Compute(input)
 ```
 
-This creates a Value  object vectorValue that contains a vector of three scalar values.
+## Multi-Head Attention
 
-### Activation Functions:
+MicroGrad includes multi-head attention layers, a critical component in transformer-based models:
 
+``` vbnet
 
-You can apply activation functions to scalar or vector Value objects as needed. For example:
+Dim attentionLayer As New MultiheadAttentionLayer(inputSize:=256, querySize:=64, keySize:=64, valueSize:=64, heads:=4)
 
-```vbnet
-
-Dim scalarValue As New Value(2.0)
-Dim sigmoidResult As Value = scalarValue.Sigmoid() ' Apply sigmoid activation to a scalar
-
-Dim reluResult As Value = vectorValue.Relu() ' Apply ReLU activation to a vector
+' Attend to queries, keys, and values
+Dim queries As New List(Of Scaler)(...)
+Dim keys As New List(Of Scaler)(...)
+Dim values As New List(Of Scaler)(...)
+Dim attendedOutputs As List(Of Scaler) = attentionLayer.Attend(queries, keys, values)
 ```
 
-### Mathematical Operations:
 
-You can perform mathematical operations on scalar or vector Value objects using overloaded operators. For example:
 
-```vbnet
+### Scaler
 
-Dim scalarValue1 As New Value(2.0)
-Dim scalarValue2 As New Value(3.0)
+The `Scaler` class represents a single scalar value and supports mathematical operations. Here's an example of how to use it:
 
-Dim additionResult As Value = scalarValue1 + scalarValue2 ' Scalar addition
+```vb
+Imports MicroGrad
 
-Dim vectorValue1 As New Value(New List(Of Double) From {1.0, 2.0, 3.0})
-Dim vectorValue2 As New Value(New List(Of Double) From {4.0, 5.0, 6.0})
+' Create scalars
+Dim a As New Scaler(2.0)
+Dim b As New Scaler(3.0)
 
-Dim multiplicationResult As Value = vectorValue1 * vectorValue2 ' Element-wise vector multiplication
+' Perform operations
+Dim c As Scaler = a + b
+Dim d As Scaler = a * b
+
+' Print results
+Console.WriteLine("a + b = " & c.data)
+Console.WriteLine("a * b = " & d.data)
 ```
 
-### Loss Function:
+## Vector
 
-You can use the MeanSquaredError function to compute the mean squared error loss:
+The Vector class represents a collection of scalar values and supports element-wise operations. Here's an example of how to use it:
 
 ```vbnet
 
-Dim prediction As New Value(2.5) ' Example prediction
-Dim target As Double = 3.0 ' Example target value
+Imports MicroGrad
 
-Dim mseLoss As Value = prediction.MeanSquaredError(target)
+' Create vectors
+Dim values1 As New List(Of Double)() From {1.0, 2.0, 3.0}
+Dim values2 As New List(Of Double)() From {4.0, 5.0, 6.0}
+Dim vector1 As New Vector(values1)
+Dim vector2 As New Vector(values2)
+
+' Perform element-wise operations
+Dim resultAdd As Vector = vector1 + vector2
+Dim resultMultiply As Vector = vector1 * vector2
+
+' Print results
+Console.WriteLine("vector1 + vector2 = " & String.Join(", ", resultAdd.data))
+Console.WriteLine("vector1 * vector2 = " & String.Join(", ", resultMultiply.data))
+```
+## Models
+MicroGrad provides several pre-built models, including Transformer models and MLPs with attention. Here's an example of how to create and use the TransformerModel:
+
+``` vbnet
+
+Imports MicroGrad.Models
+
+' Create a TransformerModel with specified parameters
+Dim numBlocks As Integer = 2
+Dim encoderHeads As Integer = 2
+Dim decoderHeads As Integer = 2
+Dim inputSize As Integer = 64
+Dim querySize As Integer = 16
+Dim keySize As Integer = 16
+Dim valueSize As Integer = 16
+
+Dim transformerModel As New TransformerModel(numBlocks, encoderHeads, decoderHeads, inputSize, querySize, keySize, valueSize)
+
+' Define input data as a list of Scalers (example)
+Dim inputData As New List(Of Scaler)()
+' ... Populate inputData with your data ...
+
+' Compute the output of the TransformerModel
+Dim output As List(Of Scaler) = transformerModel.Compute(inputData)
+
+' Access model parameters if needed
+Dim modelParameters As List(Of Scaler) = transformerModel.Parameters()
 ```
 
-### Softmax and Log-Softmax:
 
-You can apply softmax and log-softmax functions to a vector of logits as follows:
+Here, we import the TransformerModel from the MicroGrad.Models namespace and create an instance of it with specified parameters. We then define input data as a list of Scaler objects (you should populate it with your data) and compute the output of the model. If you need to access the model's parameters, you can do so using the Parameters() method.
 
-```vbnet
+## Contributing
 
-Dim logits As New Value(New List(Of Double) From {1.0, 2.0, 3.0})
+We welcome contributions to MicroGrad. Feel free to open issues, submit pull requests, or provide feedback to help improve the library.
 
-Dim softmaxResult As Value = logits.Softmax()
-Dim logSoftmaxResult As Value = logits.LogSoftmax()
-```
+## License
 
-These operations will return Value objects containing the softmax or log-softmax values for each element in the input vector.
-
-### Backpropagation:
-
-After performing forward operations, you can calculate gradients and perform backpropagation using the backward method:
-
-```vbnet
-
-' Assuming you've computed a loss and want to backpropagate
-mseLoss.grad = 1.0 ' Set the gradient of the loss
-mseLoss.backward() ' Perform backpropagation to compute gradients for all involved Value objects
-```
-
-### Softmax and LogSoftmax
-To use the Softmax and LogSoftmax functions in your Value class, you can follow these steps:
-Create Value Objects for Logits: First, create Value objects for your input logits. These logits represent the unnormalized scores for different classes in a classification problem. Each element in the logits corresponds to a class.
-
-```vbnet
-Dim logits As New List(Of Value)()
-logits.Add(New Value(2.0)) ' Example logits for class 1
-logits.Add(New Value(1.0)) ' Example logits for class 2
-logits.Add(New Value(0.1)) ' Example logits for class 3
-```
-
-### Apply Softmax or LogSoftmax: 
-You can apply the Softmax or LogSoftmax functions to the logits as follows:
-```vbnet
-Dim softmaxResult As Value = logits(0).Softmax()
-Dim logSoftmaxResult As Value = logits(0).LogSoftmax()
-In this example, we've applied the functions to the first element of the logits list, but you can apply them to any element depending on your specific use case.
-```
-### Access the Result: 
-The softmaxResult and logSoftmaxResult objects now contain the softmax or log-softmax values for each element in the input vector. You can access these values as follows:
-```vbnet
-Dim softmaxValues As List(Of Double) = softmaxResult.data
-Dim logSoftmaxValues As List(Of Double) = logSoftmaxResult.data
-```
-The softmaxValues and logSoftmaxValues lists will contain the softmax or log-softmax values for each class, respectively.
-Here's a complete example that demonstrates how to use the Softmax and LogSoftmax functions with a list of logits:
-```vbnet
-Dim logits As New List(Of Value)()
-logits.Add(New Value(2.0)) ' Example logits for class 1
-logits.Add(New Value(1.0)) ' Example logits for class 2
-logits.Add(New Value(0.1)) ' Example logits for class 3
-
-' Apply softmax and log-softmax
-Dim softmaxResult As Value = logits(0).Softmax()
-Dim logSoftmaxResult As Value = logits(0).LogSoftmax()
-
-' Access the results
-Dim softmaxValues As List(Of Double) = softmaxResult.data
-Dim logSoftmaxValues As List(Of Double) = logSoftmaxResult.data
-
-' Print the results
-Console.WriteLine("Softmax Values:")
-For Each value In softmaxValues
-    Console.WriteLine(value)
-Next
-
-Console.WriteLine("Log-Softmax Values:")
-For Each value In logSoftmaxValues
-    Console.WriteLine(value)
-Next
-```
-This example demonstrates how to use these functions to compute softmax and log-softmax values for a list of logits, which is common in classification tasks in machine learning.
-
-### SequenceCrossEntropy loss:
-
-SequenceCrossEntropy loss function for sequence tasks, apply the exponentiation and division operators, and use the GELU activation function on Value objects as needed in your Visual Basic projects.
-
-Here's an example of how to use these extended functionalities:
-
-```vbnet
-
-' Create a Value object
-Dim x As New Value(2.0)
-
-' Calculate GELU
-Dim geluResult As Value = x.GELU()
-
-
-### License
-
-MIT
+MicroGrad is licensed under the MIT License. See the LICENSE file for details.
