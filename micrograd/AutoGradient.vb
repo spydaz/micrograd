@@ -1,12 +1,13 @@
-﻿Imports SpydazWebAI.AutoGradient.iEngine.NN.Models.Blocks
-Imports SpydazWebAI.AutoGradient.iEngine.NN.Models.Layers
+﻿Imports System.Windows.Forms
+Imports Micrograd.AutoGradient.Engine.NN.Models.Blocks
+Imports Micrograd.AutoGradient.Engine.NN.Models.Layers
 
 Namespace AutoGradient
     'Autograd engine (with a bite! :)).
     'Implements backpropagation (reverse-mode autodiff) over a dynamically built DAG
     'and a small neural networks library on top of it with a PyTorch-like API. 
     'Model By Andrew karpathy
-    Namespace iEngine
+    Namespace Engine
         Public Class Scaler
             Public _backward As Action = Sub()
                                          End Sub
@@ -1905,45 +1906,6 @@ Namespace AutoGradient
                 End Function
             End Class
 
-            Public Class iMLP
-                Inherits AutoGradientParameters
-
-                Private layers As List(Of Layer)
-
-                Public Sub New(nin As Integer, nouts As List(Of Integer))
-                    layers = New List(Of Layer)()
-                    Dim sz As List(Of Integer) = New List(Of Integer)()
-                    sz.Add(nin)
-                    sz.AddRange(nouts)
-
-                    For i As Integer = 0 To nouts.Count - 1
-                        Dim isLastLayer As Boolean = (i = nouts.Count - 1)
-                        Dim applyNonLinearActivation As Boolean = Not isLastLayer
-                        layers.Add(New Layer(sz(i), sz(i + 1), applyNonLinearActivation))
-                    Next
-
-                End Sub
-
-                Public Function Compute(x As List(Of Scaler)) As List(Of Scaler)
-                    For Each layer As Layer In layers
-                        x = layer.Compute(x)
-                    Next
-
-                    Return x
-                End Function
-
-                Public Overrides Function Parameters() As List(Of Scaler)
-                    Parameters = New List(Of Scaler)()
-
-                    For Each layer As Layer In layers
-                        Parameters.AddRange(layer.Parameters())
-                    Next
-
-                    Return Parameters()
-                End Function
-
-
-            End Class
 
             Public Class MLP
                 Inherits AutoGradientParameters
