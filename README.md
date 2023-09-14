@@ -1,69 +1,157 @@
 
-# micrograd
 
-![awww](puppy.jpg)
+ VB.NET:
 
-A tiny Autograd engine (with a bite! :)). Implements backpropagation (reverse-mode autodiff) over a dynamically built DAG and a small neural networks library on top of it with a PyTorch-like API. Both are tiny, with about 100 and 50 lines of code respectively. The DAG only operates over scalar values, so e.g. we chop up each neuron into all of its individual tiny adds and multiplies. However, this is enough to build up entire deep neural nets doing binary classification, as the demo notebook shows. Potentially useful for educational purposes.
+markdown
 
-### Installation
+# MicroGrad - An Autograd Library for VB.NET
 
-```bash
-pip install micrograd
+MicroGrad is a powerful autograd library for VB.NET, specifically designed for machine learning and deep learning tasks. Whether you are a seasoned machine learning engineer or a beginner taking your first steps into the world of neural networks, MicroGrad simplifies the process of building and training models.
+
+## Key Features
+
+- **Automatic Differentiation:** MicroGrad's core feature is automatic differentiation, which allows you to compute gradients of mathematical expressions. This is crucial for training machine learning models, as it enables gradient-based optimization techniques like stochastic gradient descent.
+
+- **Neural Network Building Blocks:** MicroGrad provides a collection of neural network building blocks, including layers, activation functions, and attention mechanisms. These components can be easily combined to create complex neural architectures.
+
+- **Flexibility:** With MicroGrad, you have the flexibility to define custom neural network layers and loss functions. This means you can experiment with novel architectures and loss functions tailored to your specific use case.
+
+- **Ease of Use:** MicroGrad is designed to be user-friendly. You can define and train models using familiar VB.NET syntax, making it accessible to both newcomers and experienced developers.
+
+## Installation
+
+You can add MicroGrad to your VB.NET project by cloning this repository or downloading the source code. You may also compile it as a standalone assembly and reference it in your project.
+
+## Usage
+
+
+Here are some examples of how to use MicroGrad's core components:
+
+### Scalars and Vectors
+
+MicroGrad provides `Scaler` and `Vector` classes for numerical computations. You can create and manipulate scalars and vectors with ease:
+
+```vbnet
+Dim a As New Scaler(2.0)
+Dim b As New Scaler(3.0)
+Dim c As Scaler = a + b
+Dim d As Scaler = a * b
+
+Dim v1 As New Vector(New List(Of Double)() From {1.0, 2.0, 3.0})
+Dim v2 As New Vector(New List(Of Double)() From {4.0, 5.0, 6.0})
+Dim v3 As Vector = v1 + v2
+
+
+Neural Networks
+
+You can build neural networks using MicroGrad's neural network components. Here's an example of creating a simple feedforward neural network:
+
+``` vbnet
+
+Dim model As New LayerBlock()
+model.AddLayer(New LinearLayer(inputSize:=64, outputSize:=128, applyNonLinearActivation:=True))
+model.AddLayer(New LinearLayer(inputSize:=128, outputSize:=10))
+
+' Forward pass
+Dim input As New Vector(...) ' Your input data
+Dim output As Vector = model.Compute(input)
 ```
 
-### Example usage
+## Multi-Head Attention
 
-Below is a slightly contrived example showing a number of possible supported operations:
+MicroGrad includes multi-head attention layers, a critical component in transformer-based models:
 
-```python
-from micrograd.engine import Value
+``` vbnet
 
-a = Value(-4.0)
-b = Value(2.0)
-c = a + b
-d = a * b + b**3
-c += c + 1
-c += 1 + c + (-a)
-d += d * 2 + (b + a).relu()
-d += 3 * d + (b - a).relu()
-e = c - d
-f = e**2
-g = f / 2.0
-g += 10.0 / f
-print(f'{g.data:.4f}') # prints 24.7041, the outcome of this forward pass
-g.backward()
-print(f'{a.grad:.4f}') # prints 138.8338, i.e. the numerical value of dg/da
-print(f'{b.grad:.4f}') # prints 645.5773, i.e. the numerical value of dg/db
+Dim attentionLayer As New MultiheadAttentionLayer(inputSize:=256, querySize:=64, keySize:=64, valueSize:=64, heads:=4)
+
+' Attend to queries, keys, and values
+Dim queries As New List(Of Scaler)(...)
+Dim keys As New List(Of Scaler)(...)
+Dim values As New List(Of Scaler)(...)
+Dim attendedOutputs As List(Of Scaler) = attentionLayer.Attend(queries, keys, values)
 ```
 
-### Training a neural net
 
-The notebook `demo.ipynb` provides a full demo of training an 2-layer neural network (MLP) binary classifier. This is achieved by initializing a neural net from `micrograd.nn` module, implementing a simple svm "max-margin" binary classification loss and using SGD for optimization. As shown in the notebook, using a 2-layer neural net with two 16-node hidden layers we achieve the following decision boundary on the moon dataset:
 
-![2d neuron](moon_mlp.png)
+### Scaler
 
-### Tracing / visualization
+The `Scaler` class represents a single scalar value and supports mathematical operations. Here's an example of how to use it:
 
-For added convenience, the notebook `trace_graph.ipynb` produces graphviz visualizations. E.g. this one below is of a simple 2D neuron, arrived at by calling `draw_dot` on the code below, and it shows both the data (left number in each node) and the gradient (right number in each node).
+```vb
+Imports MicroGrad
 
-```python
-from micrograd import nn
-n = nn.Neuron(2)
-x = [Value(1.0), Value(-2.0)]
-y = n(x)
-dot = draw_dot(y)
+' Create scalars
+Dim a As New Scaler(2.0)
+Dim b As New Scaler(3.0)
+
+' Perform operations
+Dim c As Scaler = a + b
+Dim d As Scaler = a * b
+
+' Print results
+Console.WriteLine("a + b = " & c.data)
+Console.WriteLine("a * b = " & d.data)
 ```
 
-![2d neuron](gout.svg)
+## Vector
 
-### Running tests
+The Vector class represents a collection of scalar values and supports element-wise operations. Here's an example of how to use it:
 
-To run the unit tests you will have to install [PyTorch](https://pytorch.org/), which the tests use as a reference for verifying the correctness of the calculated gradients. Then simply:
+```vbnet
 
-```bash
-python -m pytest
+Imports MicroGrad
+
+' Create vectors
+Dim values1 As New List(Of Double)() From {1.0, 2.0, 3.0}
+Dim values2 As New List(Of Double)() From {4.0, 5.0, 6.0}
+Dim vector1 As New Vector(values1)
+Dim vector2 As New Vector(values2)
+
+' Perform element-wise operations
+Dim resultAdd As Vector = vector1 + vector2
+Dim resultMultiply As Vector = vector1 * vector2
+
+' Print results
+Console.WriteLine("vector1 + vector2 = " & String.Join(", ", resultAdd.data))
+Console.WriteLine("vector1 * vector2 = " & String.Join(", ", resultMultiply.data))
+```
+## Models
+MicroGrad provides several pre-built models, including Transformer models and MLPs with attention. Here's an example of how to create and use the TransformerModel:
+
+``` vbnet
+
+Imports MicroGrad.Models
+
+' Create a TransformerModel with specified parameters
+Dim numBlocks As Integer = 2
+Dim encoderHeads As Integer = 2
+Dim decoderHeads As Integer = 2
+Dim inputSize As Integer = 64
+Dim querySize As Integer = 16
+Dim keySize As Integer = 16
+Dim valueSize As Integer = 16
+
+Dim transformerModel As New TransformerModel(numBlocks, encoderHeads, decoderHeads, inputSize, querySize, keySize, valueSize)
+
+' Define input data as a list of Scalers (example)
+Dim inputData As New List(Of Scaler)()
+' ... Populate inputData with your data ...
+
+' Compute the output of the TransformerModel
+Dim output As List(Of Scaler) = transformerModel.Compute(inputData)
+
+' Access model parameters if needed
+Dim modelParameters As List(Of Scaler) = transformerModel.Parameters()
 ```
 
-### License
 
-MIT
+Here, we import the TransformerModel from the MicroGrad.Models namespace and create an instance of it with specified parameters. We then define input data as a list of Scaler objects (you should populate it with your data) and compute the output of the model. If you need to access the model's parameters, you can do so using the Parameters() method.
+
+## Contributing
+
+We welcome contributions to MicroGrad. Feel free to open issues, submit pull requests, or provide feedback to help improve the library.
+
+## License
+
+MicroGrad is licensed under the MIT License. See the LICENSE file for details.
